@@ -18,8 +18,3 @@ We ran all experiments on the HPC cluster and include all the `.sh` files in the
 
 ## References
 Tian, Y., & Feng, Y. (2021). "[Neyman-pearson multi-class classification via cost-sensitive learning](https://arxiv.org/abs/2111.04597)." arXiv preprint arXiv:2111.04597.
-
-Gentleman, Robert, and Duncan Temple Lang. “[Statistical Analyses and
-Reproducible
-Research](http://biostats.bepress.com/cgi/viewcontent.cgi?article=1001&context=bioconductor).”
-(2004).
