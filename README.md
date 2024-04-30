@@ -4,7 +4,7 @@ Reproducibility Guidance
 This GitHub repository contains the code and the guidance to reproduce the numerical results in the paper "Neyman-pearson multi-class classification via cost-sensitive learning" by Ye Tian and Yang Feng.
 
 ## Description of the code
-The code for simulations and real data studies are stored in two separate folders. There is another folder storing the code for producing the empirical plots in the paper, where we mention the related figure number for each produced plot in the code files.
+The code for simulations and real data studies are stored in two separate folders. There is another folder storing the code for producing the empirical plots in the paper, where we mention the related figure number for each produced plot in the code files. Each R file can be run by the `.sh` file with job ID input 1-500 as random seeds.
 
 ## Datasets
 We include some small datasets in the folder "data". The original LendingClub dataset is very large, hence we include a pre-processed version used in our paper, and attach a Kaggle link to the original dataset with the code to pre-process the original data.
