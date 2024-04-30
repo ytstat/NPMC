@@ -7,7 +7,7 @@ This GitHub repository contains the code and the guidance to reproduce the numer
 The code for simulations and real data studies are stored in two separate folders. There is another folder storing the code for producing the empirical plots in the paper, where we mention the related figure number for each produced plot in the code files.
 
 ## Datasets
-We include some small datasets in the folder "data". The original LendingClub dataset is very large, hence we include a Kaggle link for that and include the code to pre-process the original data.
+We include some small datasets in the folder "data". The original LendingClub dataset is very large, hence we include a pre-processed version used in our paper, and attach a Kaggle link to the original dataset with the code to pre-process the original data.
 
 ## Packages
 All algorithms described in the paper have been implemented in the R package "`npcs`", which is available on CRAN. We added some functions in the second version of the paper, and these functions haven't been added to the public CRAN version (0.1.1) of the package. We will update the CRAN version to 0.2.0 in a few weeks. Before that, we include the experimental version which we used to produce the results of the current paper in a separate folder "package". The interested readers can install the R package manually in R by downloading the `.tar.gz` file and run `intall.packages(".../npcs_0.2.0.tar.gz", repos = NULL, source = TRUE)` by replacing `...` with the local path.
