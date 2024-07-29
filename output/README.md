@@ -1,5 +1,3 @@
-Please replace the contents of this file with relevant instructions for your repository or remove this file entirely.
-
-This directory would generally contain results of simulations or real data analyses. Also, intermediate output files might be placed here, cached to avoid having to rerun computationally-intensive steps of the workflow. 
+This folder stores all the output results from each R code. The results are organized into different folders, with each replication using a specific random seed $i$ corresponding to the file `i.RData`. The script `summary_result.R` in the folder "code/drawing" reads the results from this folder and produces the figures in our paper.
 
 
