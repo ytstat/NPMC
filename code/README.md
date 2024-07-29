@@ -10,7 +10,7 @@ The code for running experiments on the dry bean dataset is `beans.R`.
 
 The code for running experiments on the Statlog(Landsat satellite) dataset is `sat.R`.
 
-The code for running experiments on the dementia dataset is `yangdata.R`.
+The code for running experiments on the dementia dataset is `dementia.R`.
 
 ## Code for producing the figures
 The code for producing the figures in the paper can be found in a separate folder "drawing".
