@@ -3,6 +3,10 @@ library(ggplot2)
 library(ggpubr)
 library(mvtnorm)
 library(latex2exp)
+library(here)
+library(conflicted)
+relative_path <- here()
+
 conflict_prefer(name = "select", winner = "dplyr")
 conflict_prefer(name = "filter", winner = "dplyr")
 conflict_prefer(name = "margin", winner = "ggplot2")
@@ -39,32 +43,6 @@ plot_verify <- ggplot(data = data.frame(alpha1, alpha2), aes(x = alpha1, y = alp
                                "s = 1, f = 1"))
 
 
-
-obj.matrix <- matrix(nrow = 1000, ncol = 1000, dimnames = list((1:1000)/1000, (1:1000)/1000))
-for (i in 1:1000) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/model1_true_new/", i, ".RData"))
-  obj.matrix[i, ] <- obj_value
-}
-
-
-data <- expand.grid(alpha1=(1:1000)/1000, alpha2=(1:1000)/1000)
-data$obj_value <- as.vector(obj.matrix)
-
-
-# Heatmap
-plot_left_true <- ggplot(data, aes(alpha1, alpha2, fill = (obj_value)**(1/4))) + geom_raster() +
-  theme(plot.title = element_text(hjust = 0.5), legend.position="bottom") +
-  xlab(TeX(r"($\alpha_1$)")) + ylab(TeX(r"($\alpha_2$)")) + labs(fill='objective value') +
-  geom_point(aes(size=""), shape =NA, colour = "darkgray")+
-  guides(size=guide_legend(title=TeX(r"($f = 0$)"), title.vjust = 0.5, override.aes=list(shape=15, size = 7)),
-         fill=guide_colorbar(title.vjust = 0.8))+ scale_fill_continuous(limits = range(0, 1.2))
-
-
-
-# # save as a 10*5 pdf
-# ggarrange(plot_left_true, plot_verify, nrow = 1, ncol = 2)
-
-
 ## NPMC-CX-logistic: Figure 2, upper right plot
 # -------------------------------------
 s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
@@ -73,7 +51,7 @@ f.verify.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (
 obj.verify.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/logistic_model1_check_new/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/out/simulation/logistic_model1_check/", i, ".RData"))
   s.matrix[i, ] <- D_matrix[, "s"]
   f.matrix[i, ] <- D_matrix[, "f"]
   obj.matrix[i, ] <- D_matrix[, "obj.value"]
@@ -124,7 +102,7 @@ s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/
 f.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/knn_model1_check_new/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/knn_model1_check/", i, ".RData"))
   s.matrix[i, ] <- D_matrix[, "s"]
   f.matrix[i, ] <- D_matrix[, "f"]
   obj.matrix[i, ] <- D_matrix[, "obj.value"]
@@ -198,7 +176,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.logistic <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/logistic/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/logistic/", i, ".RData"))
   for (j in 1:10) {
     er.table1 <- rbind(er.table1, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error1[[j]]), each = 4),n = n.list[[j]], value = as.vector(error1[[j]])))
   }
@@ -240,7 +218,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.lda <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/lda/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/lda/", i, ".RData"))
   for (j in 1:10) {
     er.table1 <- rbind(er.table1, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error1[[j]]), each = 4),n = n.list[[j]], value = as.vector(error1[[j]])))
   }
@@ -280,7 +258,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.knn <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/knn/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/knn/", i, ".RData"))
   for (j in 1:10) {
     er.table1 <- rbind(er.table1, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error1[[j]]), each = 4),n = n.list[[j]], value = as.vector(error1[[j]])))
   }
@@ -322,7 +300,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.nnb <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/nnb/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/nnb/", i, ".RData"))
   for (j in 1:10) {
     er.table1 <- rbind(er.table1, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error1[[j]]), each = 4),n = n.list[[j]], value = as.vector(error1[[j]])))
   }
@@ -403,7 +381,7 @@ er.table2 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/logistic/", i, ".RData"))
+  load(paste0(relative_path, relative_path, "/output/simulation/logistic/", i, ".RData"))
   for (j in 1:10) {
     er.table2 <- rbind(er.table2, data.frame(method = rep(c("CX", "ER", "vanilla"), 5), class = rep(colnames(error2[[j]]), each = 3),n = n.list[[j]], value = as.vector(error2[[j]])))
   }
@@ -439,7 +417,7 @@ er.table2 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/lda/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/lda/", i, ".RData"))
   for (j in 1:10) {
     er.table2 <- rbind(er.table2, data.frame(method = rep(c("CX", "ER", "vanilla"), 5), class = rep(colnames(error2[[j]]), each = 3),n = n.list[[j]], value = as.vector(error2[[j]])))
   }
@@ -476,7 +454,7 @@ er.table2 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/knn/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/knn/", i, ".RData"))
   for (j in 1:10) {
     er.table2 <- rbind(er.table2, data.frame(method = rep(c("CX", "ER", "vanilla"), 5), class = rep(colnames(error2[[j]]), each = 3),n = n.list[[j]], value = as.vector(error2[[j]])))
   }
@@ -513,7 +491,7 @@ er.table2 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/nnb/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/nnb/", i, ".RData"))
   for (j in 1:10) {
     er.table2 <- rbind(er.table2, data.frame(method = rep(c("CX", "ER", "vanilla"), 5), class = rep(colnames(error2[[j]]), each = 3),n = n.list[[j]], value = as.vector(error2[[j]])))
   }
@@ -561,7 +539,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.logistic <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/logistic/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/logistic/", i, ".RData"))
   for (j in 1:10) {
     er.table3 <- rbind(er.table3, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 4), class = rep(colnames(error3[[j]]), each = 4),n = n.list[[j]], value = as.vector(error3[[j]])))
   }
@@ -610,7 +588,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.lda <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/lda/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/lda/", i, ".RData"))
   for (j in 1:10) {
     er.table3 <- rbind(er.table3, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 4), class = rep(colnames(error3[[j]]), each = 4),n = n.list[[j]], value = as.vector(error3[[j]])))
   }
@@ -659,7 +637,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.knn <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/knn/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/knn/", i, ".RData"))
   for (j in 1:10) {
     er.table3 <- rbind(er.table3, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 4), class = rep(colnames(error3[[j]]), each = 4),n = n.list[[j]], value = as.vector(error3[[j]])))
   }
@@ -710,7 +688,7 @@ n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 time.list.avg.knn <- matrix(0, nrow = 10, ncol = 4, dimnames = list(seq(1000, 10000, 1000), c("CX", "ER", "vanilla", "MNPO")))
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/nnb/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/nnb/", i, ".RData"))
   for (j in 1:10) {
     er.table3 <- rbind(er.table3, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 4), class = rep(colnames(error3[[j]]), each = 4),n = n.list[[j]], value = as.vector(error3[[j]])))
   }
@@ -769,7 +747,7 @@ er.table4 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/logistic/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/logistic/", i, ".RData"))
   for (j in 1:10) {
     er.table4 <- rbind(er.table4, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error4[[j]]), each = 4),n = n.list[[j]], value = as.vector(error4[[j]])))
   }
@@ -809,7 +787,7 @@ er.table4 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/lda/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/lda/", i, ".RData"))
   for (j in 1:10) {
     er.table4 <- rbind(er.table4, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error4[[j]]), each = 4),n = n.list[[j]], value = as.vector(error4[[j]])))
   }
@@ -849,7 +827,7 @@ er.table4 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/knn/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/knn/", i, ".RData"))
   for (j in 1:10) {
     er.table4 <- rbind(er.table4, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error4[[j]]), each = 4),n = n.list[[j]], value = as.vector(error4[[j]])))
   }
@@ -892,7 +870,7 @@ er.table4 <- data.frame(method = NA, class = NA, n = NA, value = NA)
 n.list <- seq(1000, 10000, 1000)
 n.plot <- seq(1000, 10000, 2000)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/simulation/nnb/", i, ".RData"))
+  load(paste0(relative_path, "/output/simulation/nnb/", i, ".RData"))
   for (j in 1:10) {
     er.table4 <- rbind(er.table4, data.frame(method = rep(c("CX", "ER", "vanilla", "MNPO"), 3), class = rep(colnames(error4[[j]]), each = 4),n = n.list[[j]], value = as.vector(error4[[j]])))
   }
@@ -936,12 +914,12 @@ ggarrange(plot1.logistic, plot2.logistic, plot3.logistic, plot4.logistic,
 
 
 # -------------------------------------
-# real-data: beans
+# real_data: beans
 # -------------------------------------
 
 er.table <- data.frame(method = NA, class = NA, classifier = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/beans/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/beans/", i, ".RData"))
   for (j in 1:4) {
     error[[j]] <- cbind(error[[j]], objective = error[[j]][, 3]/4 + error[[j]][, 5]/4 + error[[j]][, 6]/4 + error[[j]][, 7]/4)
     er.table <- rbind(er.table, data.frame(method = rep(c("NPMC-CX", "NPMC-ER", "vanilla"), 8), class = rep(colnames(error[[j]]), each = 3), classifier = names(error)[j], value = as.vector(error[[j]])))
@@ -995,11 +973,11 @@ er.table %>% filter(classifier == "randomforest", method == "NPMC-ER") %>% summa
 ggarrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2, common.legend = TRUE, legend = "bottom")
 
 # -------------------------------------
-# real-data: sat
+# real_data: sat
 # -------------------------------------
 er.table <- data.frame(method = NA, class = NA, classifier = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/sat/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/sat/", i, ".RData"))
   for (j in 1:4) {
     error[[j]] <- cbind(error[[j]], objective = rowMeans(error[[j]]))
     er.table <- rbind(er.table, data.frame(method = rep(c("NPMC-CX", "NPMC-ER", "vanilla"), 7), class = rep(colnames(error[[j]]), each = 3), classifier = names(error)[j], value = as.vector(error[[j]])))
@@ -1060,13 +1038,13 @@ ggarrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2, common.legend = TRUE, 
 
 
 # -------------------------------------
-# real-data: yangdata
+# real_data: dementia
 # -------------------------------------
 
 # without smote
 er.table <- data.frame(method = NA, class = NA, classifier = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/yangdata/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/dementia/", i, ".RData"))
   for (j in 1:4) {
     er.table <- rbind(er.table, data.frame(method = rep(c("NPMC-CX", "NPMC-ER", "vanilla"), 3), class = rep(colnames(error[[j]]), each = 3), classifier = names(error)[j], value = as.vector(error[[j]])))
   }
@@ -1124,7 +1102,7 @@ ggarrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2, common.legend = TRUE, 
 # with smote
 er.table <- data.frame(method = NA, class = NA, classifier = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/yangdata/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/dementia/", i, ".RData"))
   for (j in 1:4) {
     er.table <- rbind(er.table, data.frame(method = rep(c("NPMC-CX", "NPMC-ER", "vanilla"), 3), class = rep(colnames(error.smote[[j]]), each = 3), classifier = names(error.smote)[j], value = as.vector(error.smote[[j]])))
   }
@@ -1185,7 +1163,6 @@ ggarrange(plot1, plot2, plot3, plot4, nrow = 2, ncol = 2, common.legend = TRUE, 
 # real data - LendingClub
 # -------------------------
 
-
 # -------------------------
 # NPMC problem: alpha1 = 0.3, alpha2 = 0.5
 
@@ -1193,7 +1170,7 @@ alpha <- c(0.3, 0.5, NA)
 
 er.table <- data.frame(method = NA, class = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_new/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/loanclub/loanclub/", i, ".RData"))
   er.table <- rbind(er.table, data.frame(method = rep(rownames(error), 3), class = rep(colnames(error), each = 4), value = as.vector(error)))
 }
 er.table <- er.table[-1,]
@@ -1228,7 +1205,7 @@ alpha <- c(0.1, 0.15, NA)
 
 er.table <- data.frame(method = NA, class = NA, value = NA)
 for (i in 1:500) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_new/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/loanclub/loanclub/", i, ".RData"))
   er.table <- rbind(er.table, data.frame(method = rep(rownames(error_confusion), 3), class = rep(colnames(error_confusion), each = 4), value = as.vector(error_confusion)))
 }
 er.table <- er.table[-1,]
@@ -1259,7 +1236,7 @@ s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/
 f.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_logistic_new/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/loanclub/loanclub_logistic/", i, ".RData"))
   s.matrix[i, ] <- D_matrix[, "s"]
   f.matrix[i, ] <- D_matrix[, "f"]
   obj.matrix[i, ] <- D_matrix[, "obj.value"]
@@ -1311,7 +1288,7 @@ s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/
 f.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_logistic_new/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/loanclub/loanclub_logistic/", i, ".RData"))
   s.matrix[i, ] <- D_matrix_confusion[, "s"]
   f.matrix[i, ] <- D_matrix_confusion[, "f"]
   obj.matrix[i, ] <- D_matrix_confusion[, "obj.value"]
@@ -1367,7 +1344,7 @@ s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/
 f.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  a <- try(load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_rf_new/", i, ".RData")))
+  a <- try(load(paste0(relative_path, "/output/real_data/loanclub/loanclub_rf/", i, ".RData")))
   s.matrix[i, ] <- D_matrix[, "s"]
   f.matrix[i, ] <- D_matrix[, "f"]
   obj.matrix[i, ] <- D_matrix[, "obj.value"]
@@ -1421,7 +1398,7 @@ s.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/
 f.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 obj.matrix <- matrix(nrow = 100, ncol = 100, dimnames = list((1:100)/100, (1:100)/100))
 for (i in 1:100) {
-  load(paste0("/Users/yetian/Desktop/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/experiments/real-data/loanclub/loanclub_rf_new/", i, ".RData"))
+  load(paste0(relative_path, "/output/real_data/loanclub/loanclub_rf/", i, ".RData"))
   s.matrix[i, ] <- D_matrix_confusion[, "s"]
   f.matrix[i, ] <- D_matrix_confusion[, "f"]
   obj.matrix[i, ] <- D_matrix_confusion[, "obj.value"]

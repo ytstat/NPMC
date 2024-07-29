@@ -1,18 +1,19 @@
 #!/bin/sh
 #
-# Simple "Hello World" submit script for Slurm.
+# run "sat.R" using the script
 #
 #SBATCH --account=stats         # Replace ACCOUNT with your group account name
 #SBATCH --job-name=sat     # The job name.
 #SBATCH -c 1                     # The number of cpu cores to use
 #SBATCH -t 00-05:30                 # Runtime in D-HH:MM
 #SBATCH --mem-per-cpu=2gb         # The memory the job will use per cpu core
-#SBATCH --output=/burg/home/yt2661/trash/slurm-%A_%a.out
+#SBATCH --output=/out/slurm-%A_%a.out # save the .out file
 
-export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=1 # limit the number of threads to 1
 
-module load R/4.1.0
+module load R/4.1.0 # load R
  
-#Command to execute Python program
-R CMD BATCH --no-save --vanilla sat.R /burg/home/yt2661/projects/NPMC/experiment/real_data/sat/out/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.txt
+#Command to execute R program
+R CMD BATCH --no-save --vanilla sat.R /out/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.txt # run "sat.R" and save the output information
+ 
  

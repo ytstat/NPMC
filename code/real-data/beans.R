@@ -1,8 +1,3 @@
-# Columbia Ginsburg
-
-.libPaths("/burg/home/yt2661/R/x86_64-pc-linux-gnu-library/4.1/")
-
-
 library(dfoptim)
 library(nnet)
 library(dplyr)
@@ -15,6 +10,9 @@ library(MASS)
 library(conflicted)
 library(stringr)
 library(readxl)
+library(here)
+
+relative_path <- here()
 
 conflict_prefer(name = "select", winner = "dplyr")
 conflict_prefer(name = "filter", winner = "dplyr")
@@ -23,7 +21,7 @@ Sys.setenv(LANG = "en_US.UTF-8")
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 cat("seed=", seed, "\n")
 
-filename = paste("/burg/home/yt2661/projects/NPMC/experiment/real_data/beans/result/", seed, ".RData", sep = "")
+filename = paste(relative_path, "/output/real_data/beans/", seed, ".RData", sep = "")
 if (file.exists(filename)) {
   stop("Done!")
 }
@@ -33,8 +31,7 @@ set.seed(seed, kind = "L'Ecuyer-CMRG")
 
 
 # -----------------------------------------------------------------------------------
-beans <- read_xlsx("/burg/home/yt2661/projects/NPMC/datasets/Dry_Bean_Dataset.xlsx")
-# beans <- read_xlsx("/Users/yetian/Library/CloudStorage/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/datasets/beans/Dry_Bean_Dataset.xlsx")
+beans <- read_xlsx(paste0(relative_path, "/data/beans/Dry_Bean_Dataset.xlsx"))
 
 y <- factor(beans$Class)
 levels(y) <- 1:7

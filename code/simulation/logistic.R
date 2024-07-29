@@ -1,8 +1,3 @@
-# Columbia Ginsburg
-
-.libPaths("/burg/home/yt2661/R/x86_64-pc-linux-gnu-library/4.1/")
-
-
 library(dfoptim)
 library(nnet)
 library(dplyr)
@@ -14,6 +9,9 @@ library(naivebayes)
 library(MASS)
 library(conflicted)
 library(stringr)
+library(here)
+
+relative_path <- here()
 
 conflict_prefer(name = "select", winner = "dplyr")
 conflict_prefer(name = "filter", winner = "dplyr")
@@ -22,7 +20,7 @@ Sys.setenv(LANG = "en_US.UTF-8")
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 cat("seed=", seed, "\n")
 
-filename = paste("/burg/home/yt2661/projects/NPMC/experiment/simulation/logistic/result/", seed, ".RData", sep = "")
+filename = paste(relative_path, "/output/simulation/logistic/", seed, ".RData", sep = "")
 if (file.exists(filename)) {
   stop("Done!")
 }

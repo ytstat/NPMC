@@ -15,6 +15,9 @@ library(MASS)
 library(conflicted)
 library(stringr)
 library(readxl)
+library(here)
+
+relative_path <- here()
 
 conflict_prefer(name = "select", winner = "dplyr")
 conflict_prefer(name = "filter", winner = "dplyr")
@@ -23,7 +26,7 @@ Sys.setenv(LANG = "en_US.UTF-8")
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 cat("seed=", seed, "\n")
 
-filename = paste("/burg/home/yt2661/projects/NPMC/experiment/real_data/sat/result/", seed, ".RData", sep = "")
+filename = paste(relative_path, "/output/real_data/sat/", seed, ".RData", sep = "")
 if (file.exists(filename)) {
   stop("Done!")
 }
@@ -31,11 +34,11 @@ if (file.exists(filename)) {
 set.seed(seed, kind = "L'Ecuyer-CMRG")
 
 # -----------------------------------------------------------------------------------
-sat.train <- read.table("/burg/home/yt2661/projects/NPMC/datasets/sat/sat.trn", header = FALSE)
-sat.test <- read.table("/burg/home/yt2661/projects/NPMC/datasets/sat/sat.tst", header = FALSE)
+beans <- read_xlsx(paste0(relative_path, "/data/beans/Dry_Bean_Dataset.xlsx"))
 
-# sat.train <- read.table("/Users/yetian/Library/CloudStorage/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/datasets/sat/sat.trn", header = FALSE)
-# sat.test <- read.table("/Users/yetian/Library/CloudStorage/Dropbox/Columbia/Research/Project/Neyman-Pearson Multiclass Classification/datasets/sat/sat.tst", header = FALSE)
+
+sat.train <- read.table(paste0(relative_path, "/data/sat/sat.trn"), header = FALSE)
+sat.test <-  read.table(paste0(relative_path, "/data/sat/sat.tst"), header = FALSE)
 
 sat <- rbind(sat.train, sat.test)
 

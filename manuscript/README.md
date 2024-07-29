@@ -1,3 +1,17 @@
-Please replace the contents of this file with relevant instructions for your repository or remove this file entirely. Also remove `JASA-template.zip` (after extracting the contents as needed).
+## Approximate running time
 
-This directory would generally contain the manuscript source files, including the LaTeX or Rmd file for the manuscript, and figure files and files containing tabular information.
+### Simulation
+- logistic.sh: 25 minutes
+- lda.sh: 25 minutes
+- knn.sh: 30 minutes
+- nnb.sh: 25 minutes
+- logistic_model1_check.sh: 1.5 hours
+- knn_model1_check.sh: 2.5 hours
+
+### Real data
+- beans.sh: 100 seconds
+- sat.sh: 60 seconds
+- dementia.sh: 10 seconds
+- loanclub.sh: 1 hour
+- loanclub_logistic.sh: 7 hours
+- loanclub_rf.sh: 10 hours
